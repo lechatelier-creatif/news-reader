@@ -316,7 +316,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)$('back').click
 // swipe retour sur iPhone
 let sx=null;$('reader').addEventListener('touchstart',e=>{sx=e.touches[0].clientX<30?e.touches[0].clientX:null},{passive:true});
 $('reader').addEventListener('touchend',e=>{if(sx!==null&&e.changedTouches[0].clientX-sx>80)$('back').click();sx=null});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&data&&Date.now()-new Date(data.updated)>30*6e4)load(true)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&data)load(true)});
 
 let renderCfg;function _oldCfg(){
   const n={};data.articles.forEach(a=>n[a.source]=(n[a.source]||0)+1);
@@ -398,6 +398,29 @@ $('cfgList').addEventListener('click',async e=>{
 });
 $('ncAdd').onclick=()=>{const nm=$('ncName').value.trim(),ic=$('ncIcon').value.trim()||'📰';if(!nm){msg('Donne un nom à la catégorie','err');return}
   editSources(cfg=>cfg.categories.push({id:slug(nm),name:nm,icon:ic,sources:[]}),'Catégorie créée : '+nm).then(ok=>{if(ok){$('ncName').value='';$('ncIcon').value=''}})};
+
+/* ---------- ↻ : relance le robot GitHub puis attend les nouveaux articles ---------- */
+let robotBusy=false;
+async function runRobot(silent){
+  if(robotBusy)return;
+  if(!gh.tok){if(!silent)alert("Pour relancer le robot, ajoute ton jeton GitHub dans ⚙︎ → Connexion GitHub.");return load(true)}
+  robotBusy=true;const before=data&&data.updated;
+  $('refresh').textContent='⏳';$('upd').textContent='🤖 Robot lancé, récupération des articles (1 à 3 min)…';
+  try{
+    const r=await fetch(`https://api.github.com/repos/${gh.repo}/actions/workflows/fetch.yml/dispatches`,{method:'POST',headers:{Authorization:'Bearer '+gh.tok,Accept:'application/vnd.github+json'},body:JSON.stringify({ref:'main'})});
+    if(!r.ok)throw new Error(r.status===403||r.status===404?"le jeton n'a pas le droit de lancer le robot (coche « repo » ou « workflow »)":'erreur '+r.status);
+    for(let i=0;i<20;i++){
+      await new Promise(ok=>setTimeout(ok,15000));
+      const n=await fetch('news.json?t='+Date.now(),{cache:'no-store'}).then(x=>x.json()).catch(()=>null);
+      if(n&&n.updated!==before){data=n;SS('cache',n);renderTabs();render();$('upd').textContent='✅ Mis à jour à l’instant';break}
+      $('upd').textContent='🤖 Récupération en cours… '+((i+1)*15)+' s';
+    }
+  }catch(e){$('upd').textContent='⚠️ '+e.message}
+  robotBusy=false;$('refresh').textContent='↻';
+}
+$('refresh').onclick=()=>runRobot(false);
+// À l'ouverture de l'app : si les news ont plus de 45 min, on relance le robot tout seul
+const _load=load;load=async f=>{await _load(f);if(gh.tok&&data&&Date.now()-new Date(data.updated)>45*6e4)runRobot(true)};
 
 applyPrefs();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
