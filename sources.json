@@ -24,6 +24,10 @@
         {
           "name": "iPhoneSoft",
           "feed": "https://feeds.feedburner.com/iphonesoft"
+        },
+        {
+          "name": "Numérama",
+          "feed": "https://numerama.com"
         }
       ]
     },
