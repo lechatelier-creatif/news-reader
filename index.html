@@ -172,6 +172,18 @@ body.reading #home,body.reading .sec{display:none!important}
  body.reading main .card img{width:60px!important;min-width:60px!important;height:60px!important}
  .chips{grid-template-columns:repeat(3,1fr)!important}
 }
+
+/* Pleine largeur sur iPhone / iPhone Duo (écrans tactiles) : pas de bande vide à droite */
+html,body{overflow-x:hidden;width:100%;max-width:100%}
+#reader:not(.open){visibility:hidden;pointer-events:none}
+@media (pointer:coarse){
+ header>*,#home,main,.sec,#upd,#q,.tabs,.top{max-width:none!important}
+ main,#home,.sec{width:100%!important;margin-left:0!important;margin-right:0!important}
+}
+@media (pointer:coarse) and (min-width:700px){
+ body.reading header,body.reading #upd,body.reading main{width:50%!important;max-width:50%!important}
+ #reader{left:50%!important;right:0!important;width:auto!important}
+}
 </style>
 </head>
 <body>
