@@ -289,6 +289,114 @@ article img{border-radius:16px!important;box-shadow:var(--shadow)}
 #cfg label{font-size:17px!important}
 .sw:checked{background:var(--green)!important}
 @media (min-width:700px){body.reading main .card{border-radius:14px!important}}
+
+/* ---------- Couleurs ---------- */
+:root{--c-apple:#0a84ff;--c-ia:#bf5af2;--c-startup:#ff9f0a;--c-aura:#30d158;--c-jeux:#ff375f;--c-def:#64d2ff}
+body{background:radial-gradient(1200px 600px at 0% -10%,rgba(10,132,255,.14),transparent 60%),radial-gradient(900px 500px at 100% 0%,rgba(191,90,242,.13),transparent 60%),radial-gradient(900px 600px at 50% 110%,rgba(255,55,95,.10),transparent 60%),var(--bg);background-attachment:fixed}
+h1{background:linear-gradient(90deg,#0a84ff,#bf5af2,#ff375f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ib{box-shadow:0 1px 4px rgba(0,0,0,.08)}
+#gear{color:#8e8e93}#favBtn{color:#ff9f0a}#refresh{color:#0a84ff}
+.tab{border:1.5px solid transparent}
+.tab[data-c]{--cc:var(--c-def)}
+.tab[data-c="all"]{--cc:#5e5ce6}.tab[data-c="apple"]{--cc:var(--c-apple)}.tab[data-c="ia"]{--cc:var(--c-ia)}.tab[data-c="startup"]{--cc:var(--c-startup)}.tab[data-c="aura"]{--cc:var(--c-aura)}.tab[data-c="jeux"]{--cc:var(--c-jeux)}
+.tab[data-c]:not(.on){color:var(--cc);border-color:color-mix(in srgb,var(--cc) 35%,transparent);background:color-mix(in srgb,var(--cc) 10%,var(--card))}
+.tab[data-c].on{background:var(--cc);box-shadow:0 4px 14px color-mix(in srgb,var(--cc) 45%,transparent)}
+.card{--cc:var(--c-def);position:relative;border:1px solid color-mix(in srgb,var(--cc) 18%,transparent)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cc);z-index:1}
+.card .meta span:first-child{color:var(--cc)}
+.card[data-cat="apple"]{--cc:var(--c-apple)}.card[data-cat="ia"]{--cc:var(--c-ia)}.card[data-cat="startup"]{--cc:var(--c-startup)}.card[data-cat="aura"]{--cc:var(--c-aura)}.card[data-cat="jeux"]{--cc:var(--c-jeux)}
+.card:hover{box-shadow:0 8px 24px color-mix(in srgb,var(--cc) 25%,transparent)}
+.card.cur{outline-color:var(--cc)!important}
+.chip{--cc:var(--c-def);background:linear-gradient(135deg,color-mix(in srgb,var(--cc) 22%,var(--card)),var(--card))!important;border:1px solid color-mix(in srgb,var(--cc) 30%,transparent)}
+.chip b{color:var(--cc)}
+.chip[data-c="apple"]{--cc:var(--c-apple)}.chip[data-c="ia"]{--cc:var(--c-ia)}.chip[data-c="startup"]{--cc:var(--c-startup)}.chip[data-c="aura"]{--cc:var(--c-aura)}.chip[data-c="jeux"]{--cc:var(--c-jeux)}
+.sec{background:linear-gradient(90deg,#ff375f,#ff9f0a);-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
+.ticker{border:1px solid rgba(10,132,255,.2)}
+article a{color:var(--c-apple)}
+#reader .meta{color:#bf5af2}
+.orig{background:linear-gradient(90deg,#0a84ff,#bf5af2)!important;color:#fff!important}
+
+/* ---------- Liquid Glass ---------- */
+:root{--lg-bg:rgba(255,255,255,.42);--lg-bg2:rgba(255,255,255,.28);--lg-edge:rgba(255,255,255,.75);--lg-edge2:rgba(255,255,255,.25);--lg-shadow:0 8px 32px rgba(31,38,135,.12),0 1px 2px rgba(0,0,0,.06);--lg-blur:saturate(190%) blur(24px)}
+@media (prefers-color-scheme:dark){:root{--lg-bg:rgba(40,40,46,.45);--lg-bg2:rgba(60,60,70,.3);--lg-edge:rgba(255,255,255,.22);--lg-edge2:rgba(255,255,255,.06);--lg-shadow:0 8px 32px rgba(0,0,0,.45)}}
+/* base verre : fond translucide + flou + reflet spéculaire + bord lumineux */
+header,.rbar,.ib,.tab,.card,.chip,.ticker,#q,#prefs,#cfg .sheet,#cfg .grp,.hero .go,.orig{
+ background-color:var(--lg-bg)!important;backdrop-filter:var(--lg-blur);-webkit-backdrop-filter:var(--lg-blur);
+ box-shadow:inset 0 1px 0 var(--lg-edge),inset 0 -1px 0 var(--lg-edge2),inset 0 0 0 .5px var(--lg-edge2),var(--lg-shadow)}
+header,.rbar{background:linear-gradient(180deg,var(--lg-bg),var(--lg-bg2))!important;border-bottom:0!important;box-shadow:inset 0 -.5px 0 var(--lg-edge2),0 6px 24px rgba(0,0,0,.06)}
+/* reflet en haut des éléments (lumière qui glisse sur le verre) */
+.ib,.tab,.chip,.card,.ticker,.hero .go,#cfg .grp{position:relative;overflow:hidden}
+.ib::after,.tab::after,.chip::after,.card::after,.hero .go::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+ background:linear-gradient(160deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.08) 38%,transparent 55%,rgba(255,255,255,.12) 100%);mix-blend-mode:soft-light;z-index:2}
+/* boutons ronds façon contrôles iOS 26 */
+.ib{border:0;transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+.ib:active,.tab:active,.chip:active{transform:scale(.9)}
+/* onglets : capsules de verre teintées */
+.tab[data-c]:not(.on){background-color:color-mix(in srgb,var(--cc) 14%,var(--lg-bg))!important}
+.tab[data-c].on{background-color:color-mix(in srgb,var(--cc) 82%,transparent)!important;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.12),0 6px 20px color-mix(in srgb,var(--cc) 45%,transparent)}
+/* cartes : verre teinté par catégorie */
+.card{background-color:color-mix(in srgb,var(--cc) 6%,var(--lg-bg))!important;border:0!important;transition:transform .3s cubic-bezier(.3,1.4,.5,1),box-shadow .3s}
+.card:hover{transform:translateY(-3px)}
+.card img{position:relative;z-index:0}
+.chip{background:linear-gradient(135deg,color-mix(in srgb,var(--cc) 26%,transparent),var(--lg-bg))!important}
+/* recherche en verre */
+#q{border:0!important}
+/* accueil : panneau de texte en verre sur le dégradé */
+.hero .txt{padding:18px 20px;border-radius:22px;background:rgba(255,255,255,.12);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 0 0 .5px rgba(255,255,255,.25);width:fit-content}
+.hero .go{background-color:rgba(255,255,255,.3)!important;color:#fff!important}
+/* lecteur : barre et panneau de réglages en verre */
+#reader .rbar .ib{background-color:var(--lg-bg)!important}
+#prefs{border-radius:20px}#prefs button{background:rgba(127,127,127,.12)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.orig{background:linear-gradient(90deg,rgba(10,132,255,.85),rgba(191,90,242,.85))!important}
+#cfg{background:rgba(0,0,0,.2)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#cfg .sheet{border-radius:28px 28px 0 0}
+@media(min-width:900px){#cfg .sheet{border-radius:28px}}
+#cfg .grp{background-color:var(--lg-bg2)!important}
+/* fond plus coloré pour que le verre ait quelque chose à réfracter */
+body{background:radial-gradient(900px 600px at 0% 0%,rgba(10,132,255,.28),transparent 60%),radial-gradient(800px 500px at 100% 10%,rgba(191,90,242,.24),transparent 60%),radial-gradient(800px 600px at 30% 100%,rgba(255,55,95,.18),transparent 60%),radial-gradient(700px 500px at 100% 90%,rgba(48,209,88,.16),transparent 60%),var(--bg)!important;background-attachment:fixed!important}
+@supports not (backdrop-filter:blur(1px)){header,.card,.tab,.ib{background-color:var(--card)!important}}
+
+/* ================= iPhone Duo (d'après Apple iOS 27 UI Kit) =================
+   Extérieur fermé : 466 × 678 pt, rail système vertical à droite (84 pt)
+   Intérieur ouvert : 669 × 951 (portrait) / 951 × 669 (paysage)
+   Marges 20 pt, barre d'outils 82 pt, boutons 48 pt, zone de pliure réservée 40 pt */
+body.duo{--m:20px;--rail:max(env(safe-area-inset-right),84px)}
+body.duo header,body.duo #home,body.duo .sec,body.duo #upd,body.duo main{padding-left:var(--m)!important;padding-right:calc(env(safe-area-inset-right) + var(--m))!important}
+body.duo header{padding-top:calc(env(safe-area-inset-top) + 12px)}
+body.duo h1{font-size:30px}
+/* vignettes compactes */
+body.duo main{gap:10px!important;grid-template-columns:1fr!important}
+body.duo main .card{flex-direction:row;border-radius:18px}
+body.duo main .card img{width:84px!important;min-width:84px!important;height:84px!important;min-height:0!important;aspect-ratio:1/1!important;margin:10px 0 10px 10px;border-radius:12px}
+body.duo main .card .b{padding:10px 12px!important}
+body.duo main .card h2{font-size:15px!important;margin:3px 0!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+body.duo main .card p{display:none}
+body.duo .chips{grid-template-columns:repeat(2,1fr)!important}
+body.duo-inner:not(.land) main{grid-template-columns:repeat(2,1fr)!important}
+body.duo-inner:not(.land) .chips{grid-template-columns:repeat(3,1fr)!important}
+/* Lecteur : rail vertical en verre à droite (Fermer, Favori, Partager, Aa) comme dans le Kit */
+body.duo.rail #reader .rbar{position:fixed;top:0;right:0;bottom:0;left:auto;width:var(--rail);flex-direction:column;justify-content:flex-start;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 175px) 0 20px;border-left:.5px solid var(--lg-edge2)}
+body.duo.rail #reader .rbar .sp{display:none}
+body.duo.rail #reader .rbar .ib{width:48px;height:48px;font-size:19px}
+body.duo.rail #reader article{padding:28px calc(var(--rail) + 24px) 80px 24px}
+body.duo.rail #prefs{top:auto!important;right:calc(var(--rail) + 8px)!important;bottom:20px}
+/* Intérieur paysage : liste à gauche, article à droite, séparés sur la charnière */
+body.duo-inner.land.reading header,body.duo-inner.land.reading #upd,body.duo-inner.land.reading main{width:calc(50% - 20px)!important;max-width:none!important}
+body.duo-inner.land #reader{left:calc(50% + 20px)!important}
+body.duo-inner.land.reading main .card img{width:64px!important;min-width:64px!important;height:64px!important}
+/* Intérieur portrait : article plein écran (pas de rail, barre en haut) */
+body.duo-inner:not(.land) #reader{left:0!important}
+body.duo-inner:not(.land).reading header,body.duo-inner:not(.land).reading main,body.duo-inner:not(.land).reading #upd{width:auto!important}
+/* À moitié plié (posture « Folded ») : on évite la zone de pliure de 40 pt */
+@media (vertical-viewport-segments:2){
+ body.duo.reading header,body.duo.reading main,body.duo.reading #upd{width:auto!important}
+ body.duo #reader{left:0!important;top:env(viewport-segment-top 0 1,calc(50% + 20px))!important}
+ body.duo.reading main{max-height:calc(env(viewport-segment-bottom 0 0,50%) - 160px);overflow:auto}
+}
+@media (horizontal-viewport-segments:2){
+ body.duo.reading header,body.duo.reading main,body.duo.reading #upd{width:env(viewport-segment-right 0 0,calc(50% - 20px))!important}
+ body.duo #reader{left:env(viewport-segment-left 1 0,calc(50% + 20px))!important}
+}
 </style>
 </head>
 <body>
@@ -378,7 +486,7 @@ function list(){
 
 function render(){
   const a=list();
-  $('list').innerHTML=(a.length?a.slice(0,200).map(x=>`<div class="card ${read.has(x.id)?'read':''}" data-id="${x.id}">
+  $('list').innerHTML=(a.length?a.slice(0,200).map(x=>`<div class="card ${read.has(x.id)?'read':''}" data-id="${x.id}" data-cat="${x.category}">
     ${x.image?`<img src="${esc(x.image)}" loading="lazy" onerror="this.remove()">`:''}
     <div class="b"><div class="meta"><span>${esc(x.source)}</span>·<span>${ago(x.date)}</span>·<span>${x.readingTime} min</span></div>
     <h2>${esc(x.title)}</h2><p>${esc(x.excerpt)}</p></div></div>`).join(''):'<div class="empty">Aucun article</div>');
@@ -395,7 +503,7 @@ function openArt(id,noPush){
   $('rfav').classList.toggle('on',!!favs[id]);
   $('reader').scrollTop=0;$('reader').classList.add('open');document.body.classList.add('reading');document.querySelectorAll('.card.cur').forEach(c=>c.classList.remove('cur'));
   if(!noPush){location.hash&&innerWidth>=700?history.replaceState(null,'','#'+id):history.pushState(null,'','#'+id)}
-  const c=document.querySelector(`.card[data-id="${id}"]`);if(c){c.classList.add('read','cur');if(innerWidth>=700)c.scrollIntoView({block:'nearest'})}
+  const c=document.querySelector(`.card[data-id="${id}"]`);if(c){c.classList.add('read','cur');if(innerWidth>=700&&!(document.body.classList.contains('duo-inner')&&innerWidth<innerHeight))c.scrollIntoView({block:'nearest'})}
 }
 function closeArt(){$('reader').classList.remove('open');document.body.classList.remove('reading');document.querySelectorAll('.card.cur').forEach(c=>c.classList.remove('cur'));$('prefs').classList.remove('on');cur=null}
 
@@ -526,6 +634,21 @@ async function runRobot(silent){
 $('refresh').onclick=()=>runRobot(false);
 // À l'ouverture de l'app : si les news ont plus de 45 min, on relance le robot tout seul
 const _load=load;load=async f=>{await _load(f);if(gh.tok&&data&&Date.now()-new Date(data.updated)>45*6e4)runRobot(true)};
+
+/* ---------- Détection iPhone Duo ---------- */
+function detectDuo(){
+  const f=new URLSearchParams(location.search).get('duo');
+  const w=innerWidth,h=innerHeight,mn=Math.min(w,h),mx=Math.max(w,h),r=mx/mn;
+  const touch=matchMedia('(pointer:coarse)').matches;
+  let k=f||'';
+  if(!k&&touch&&r<1.7){ if(mn>=430&&mn<540)k='outer'; else if(mn>=600&&mn<730)k='inner'; }
+  const b=document.body.classList;
+  b.toggle('duo',!!k);b.toggle('duo-outer',k==='outer');b.toggle('duo-inner',k==='inner');
+  b.toggle('land',w>h);
+  b.toggle('rail',!!k&&(k==='outer'||w>h));
+}
+addEventListener('resize',detectDuo);addEventListener('orientationchange',()=>setTimeout(detectDuo,200));
+detectDuo();
 
 applyPrefs();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
