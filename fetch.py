@@ -89,6 +89,22 @@ def first_image(entry):
     m = re.search(r'<img[^>]+src=["\']([^"\']+)', entry.get("summary", "") or "")
     return m.group(1) if m else ""
 
+def discover(url):
+    """Accepte un flux RSS ou une simple adresse de site : trouve le flux tout seul."""
+    if not url.startswith("http"): url = "https://" + url
+    r = requests.get(url, headers={"User-Agent": UA}, timeout=20)
+    f = feedparser.parse(r.content)
+    if f.entries: return url, f
+    links = re.findall(r'<link[^>]+type=["\']application/(?:rss|atom)\+xml["\'][^>]*>', r.text, re.I)
+    cands = [urljoin(r.url, m.group(1)) for l in links for m in [re.search(r'href=["\']([^"\']+)', l)] if m]
+    cands += [urljoin(r.url, p) for p in ("/feed", "/rss", "/feed/", "/rss.xml", "/feed.xml", "/index.xml")]
+    for c in cands:
+        try:
+            f = feedparser.parse(requests.get(c, headers={"User-Agent": UA}, timeout=15).content)
+            if f.entries: return c, f
+        except Exception: pass
+    return url, feedparser.parse(b"")
+
 def main():
     cfg = json.load(open(os.path.join(HERE, "sources.json"), encoding="utf-8"))
     old = {}
@@ -103,9 +119,10 @@ def main():
         for src in cat["sources"]:
             print(f"[{cat['name']}] {src['name']}")
             try:
-                raw = requests.get(src["feed"], headers={"User-Agent": UA}, timeout=20).content
-                feed = feedparser.parse(raw)
+                src["feed"], feed = discover(src.get("feed") or src.get("url", ""))
+                src["status"] = "ok" if feed.entries else "aucun article trouvé"
             except Exception as e:
+                src["status"] = "inaccessible"
                 print("  ! flux", e, file=sys.stderr); continue
             for e in feed.entries[:MAX_PER_FEED]:
                 url = e.get("link")
@@ -127,7 +144,7 @@ def main():
     for a in sorted(items, key=lambda a: a["date"], reverse=True):
         if a["id"] in seen: continue
         seen.add(a["id"]); uniq.append(a)
-    cats = [{"id": c["id"], "name": c["name"], "icon": c.get("icon", ""), "sources": [s["name"] for s in c["sources"]]} for c in cfg["categories"]]
+    cats = [{"id": c["id"], "name": c["name"], "icon": c.get("icon", ""), "sources": [s["name"] for s in c["sources"]], "status": {s["name"]: s.get("status", "") for s in c["sources"]}} for c in cfg["categories"]]
     json.dump({"updated": datetime.now(timezone.utc).isoformat(), "categories": cats, "articles": uniq},
               open(OUT, "w", encoding="utf-8"), ensure_ascii=False)
     print(f"OK : {len(uniq)} articles -> news.json")

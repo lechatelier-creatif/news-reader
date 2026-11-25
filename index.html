@@ -93,6 +93,46 @@ body.theme-dark{--rbg:#1c1c1e;--rtext:#f2f2f7}
 #cfg label:last-child{border:0}#cfg label span{flex:1}#cfg label small{color:var(--sec);margin-right:10px}
 .sw{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:14px;background:var(--line);position:relative;cursor:pointer;transition:.2s;margin:0}
 .sw:checked{background:#34c759}.sw::after{content:"";position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.2s}.sw:checked::after{left:20px}
+
+/* ---------- Accueil animé ---------- */
+#home{position:relative;max-width:1100px;margin:14px auto 18px;padding:0 16px}
+.hero{position:relative;overflow:hidden;border-radius:26px;min-height:300px;padding:32px 26px;color:#fff;
+ background:linear-gradient(120deg,#0a84ff,#5e5ce6,#bf5af2,#ff375f,#ff9f0a);background-size:400% 400%;animation:grad 16s ease infinite}
+@keyframes grad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+.hero .txt{position:relative;z-index:2;max-width:560px}
+.hero h2{font-size:38px;line-height:1.05;margin:0 0 8px;font-weight:800;letter-spacing:-1px}
+.hero p{margin:0;font-size:16px;opacity:.9}
+.hero .go{margin-top:18px;border:0;padding:11px 20px;border-radius:999px;background:rgba(255,255,255,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-weight:700;font-size:15px;cursor:pointer}
+.fl{position:absolute;z-index:1;font-size:44px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.25));animation:float 7s ease-in-out infinite;user-select:none}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-22px) rotate(8deg)}}
+.orbit{position:absolute;right:-40px;top:50%;width:340px;height:340px;margin-top:-170px;border:1.5px dashed rgba(255,255,255,.35);border-radius:50%;animation:spin 40s linear infinite;z-index:1}
+.orbit span{position:absolute;font-size:30px;animation:spin 40s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ticker{margin-top:14px;overflow:hidden;white-space:nowrap;border-radius:14px;background:var(--card);padding:10px 0;font-size:14px}
+.ticker div{display:inline-block;padding-left:100%;animation:tick 60s linear infinite}
+.ticker:hover div{animation-play-state:paused}
+.ticker b{color:var(--accent);margin:0 6px 0 22px}
+@keyframes tick{to{transform:translateX(-100%)}}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+.chip{background:var(--card);border-radius:18px;padding:14px;cursor:pointer;transition:transform .2s;animation:pop .5s backwards}
+.chip:hover{transform:translateY(-3px)}
+.chip .ic{font-size:28px}.chip b{display:block;margin:4px 0 2px;font-size:16px}.chip small{color:var(--sec);font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}}
+.sec{max-width:1100px;margin:8px auto 10px;padding:0 16px;font-size:22px;font-weight:800}
+body.reading #home,body.reading .sec{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media (max-width:600px){.hero h2{font-size:30px}.orbit{width:240px;height:240px;margin-top:-120px;right:-90px;opacity:.7}}
+/* ---------- Gestion des sites ---------- */
+#cfg .del{border:0;background:none;color:#ff3b30;font-size:18px;cursor:pointer;margin-right:8px;padding:0 4px}
+#cfg .warn{color:#ff9f0a;font-size:12px;margin-right:8px}
+#cfg .add{display:flex;gap:6px;padding:10px 14px;flex-wrap:wrap}
+#cfg input[type=text],#cfg input[type=password]{flex:1;min-width:120px;padding:9px 11px;border-radius:10px;border:0;background:var(--line);color:var(--text);font-size:15px;outline:none}
+#cfg .btn{border:0;padding:9px 14px;border-radius:10px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;font-size:14px}
+#cfg .note{font-size:13px;color:var(--sec);padding:0 4px;line-height:1.4}
+#cfg .msg{padding:10px 12px;border-radius:12px;margin:8px 0;font-size:14px;display:none}
+#cfg .msg.on{display:block}#cfg .msg.ok{background:rgba(52,199,89,.15)}#cfg .msg.err{background:rgba(255,59,48,.15)}
+#cfg details summary{cursor:pointer;color:var(--accent);font-size:14px;padding:4px;margin-top:6px}
+
 </style>
 </head>
 <body>
@@ -107,12 +147,22 @@ body.theme-dark{--rbg:#1c1c1e;--rtext:#f2f2f7}
   <div class="tabs" id="cats"></div>
   <div class="tabs srcs" id="srcs"></div>
 </header>
+<section id="home"></section>
+<div class="sec" id="secT"></div>
 <div id="upd"></div>
 <main id="list"></main>
 
 <div id="cfg"><div class="sheet">
   <div class="hd"><b>Mes sites</b><button class="ib" id="cfgClose">✓</button></div>
+  <div class="msg" id="cfgMsg"></div>
   <div id="cfgList"></div>
+  <div class="gt"><span>➕ Nouvelle catégorie</span></div>
+  <div class="grp"><div class="add"><input type="text" id="ncIcon" placeholder="🎬" style="max-width:60px;min-width:60px"><input type="text" id="ncName" placeholder="Nom de la catégorie"><button class="btn" id="ncAdd">Créer</button></div></div>
+  <details id="ghBox"><summary>🔑 Connexion GitHub (nécessaire pour ajouter / supprimer)</summary>
+   <div class="grp"><div class="add"><input type="text" id="ghRepo" placeholder="pseudo/news-reader"></div>
+   <div class="add"><input type="password" id="ghTok" placeholder="Jeton GitHub (github_pat_…)"><button class="btn" id="ghSave">Enregistrer</button></div></div>
+   <p class="note">Le jeton reste uniquement sur cet appareil. Il sert à modifier la liste des sites du robot, qui récupère ensuite les nouveaux articles en 2 à 3 minutes.</p>
+  </details>
 </div></div>
 <div id="reader">
   <div class="rbar">
@@ -172,10 +222,10 @@ function list(){
 
 function render(){
   const a=list();
-  $('list').innerHTML=a.length?a.slice(0,200).map(x=>`<div class="card ${read.has(x.id)?'read':''}" data-id="${x.id}">
+  $('list').innerHTML=(a.length?a.slice(0,200).map(x=>`<div class="card ${read.has(x.id)?'read':''}" data-id="${x.id}">
     ${x.image?`<img src="${esc(x.image)}" loading="lazy" onerror="this.remove()">`:''}
     <div class="b"><div class="meta"><span>${esc(x.source)}</span>·<span>${ago(x.date)}</span>·<span>${x.readingTime} min</span></div>
-    <h2>${esc(x.title)}</h2><p>${esc(x.excerpt)}</p></div></div>`).join(''):'<div class="empty">Aucun article</div>';
+    <h2>${esc(x.title)}</h2><p>${esc(x.excerpt)}</p></div></div>`).join(''):'<div class="empty">Aucun article</div>');
 }
 
 function find(id){return data.articles.find(x=>x.id===id)||favs[id]}
@@ -202,7 +252,7 @@ function applyPrefs(){
 $('cats').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;cat=b.dataset.c;src='all';onlyFav=false;$('favBtn').textContent='☆';SS('cat',cat);renderTabs();render();scrollTo(0,0)};
 $('srcs').onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;src=b.dataset.s;renderTabs();render()};
 $('list').onclick=e=>{const c=e.target.closest('.card');if(c)openArt(c.dataset.id)};
-$('q').oninput=render;
+$('q').oninput=()=>render();
 $('refresh').onclick=()=>load(true);
 $('favBtn').onclick=()=>{onlyFav=!onlyFav;$('favBtn').textContent=onlyFav?'★':'☆';render()};
 $('back').onclick=()=>history.length>1&&location.hash?history.back():closeArt();
@@ -217,7 +267,7 @@ let sx=null;$('reader').addEventListener('touchstart',e=>{sx=e.touches[0].client
 $('reader').addEventListener('touchend',e=>{if(sx!==null&&e.changedTouches[0].clientX-sx>80)$('back').click();sx=null});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&data&&Date.now()-new Date(data.updated)>30*6e4)load(true)});
 
-function renderCfg(){
+let renderCfg;function _oldCfg(){
   const n={};data.articles.forEach(a=>n[a.source]=(n[a.source]||0)+1);
   $('cfgList').innerHTML=data.categories.map(c=>`<div class="gt"><span>${c.icon} ${esc(c.name)}</span><button data-all="${c.id}">${c.sources.every(x=>!off.has(x))?'Tout désactiver':'Tout activer'}</button></div>
   <div class="grp">${c.sources.map(x=>`<label><span>${esc(x)}</span><small>${n[x]||0}</small><input type="checkbox" class="sw" data-src="${esc(x)}" ${off.has(x)?'':'checked'}></label>`).join('')}</div>`).join('');
@@ -228,6 +278,75 @@ $('cfgClose').onclick=()=>$('cfg').classList.remove('on');
 $('cfg').onclick=e=>{if(e.target.id==='cfg')$('cfg').classList.remove('on')};
 $('cfgList').onchange=e=>{const s=e.target.dataset.src;if(!s)return;e.target.checked?off.delete(s):off.add(s);saveCfg()};
 $('cfgList').onclick=e=>{const id=e.target.dataset.all;if(!id)return;const c=data.categories.find(x=>x.id===id);const allOn=c.sources.every(x=>!off.has(x));c.sources.forEach(x=>allOn?off.add(x):off.delete(x));saveCfg()};
+
+/* ---------- Accueil ---------- */
+const FLOAT=['','📱','💻','⌚️','🎧','🎮','🕹️','👾','🤖','🧠','🚀','⚡️'];
+function renderHome(){
+  const show=cat==='all'&&!onlyFav&&!$('q').value.trim();
+  $('home').style.display=show?'block':'none';
+  $('secT').textContent=onlyFav?'⭐️ Favoris':show?'Dernières actus':'';
+  if(!show||!data)return;
+  const h=new Date().getHours(),hi=h<6?'Bonne nuit':h<12?'Bonjour':h<18?'Bon après-midi':'Bonsoir';
+  const vis=data.articles.filter(a=>!off.has(a.source));
+  const today=vis.filter(a=>Date.now()-new Date(a.date)<864e5).length;
+  const fl=FLOAT.map((e,i)=>`<span class="fl" style="left:${(i*37+8)%92}%;top:${(i*53+12)%80}%;animation-delay:-${i*0.7}s;animation-duration:${6+i%4}s;font-size:${28+(i*7)%26}px;opacity:${i<4?1:.85}">${e}</span>`).join('');
+  const orb=['','🎮','🤖','📱','🕹️','💡'].map((e,i)=>{const a=i/6*2*Math.PI;return `<span style="left:${50+50*Math.cos(a)}%;top:${50+50*Math.sin(a)}%;margin:-18px">${e}</span>`}).join('');
+  const cats=data.categories.filter(c=>c.sources.some(x=>!off.has(x)));
+  $('home').innerHTML=`<div class="hero">${fl}<div class="orbit">${orb}</div>
+    <div class="txt"><p>${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</p>
+    <h2>${hi} Nico 👋</h2><p>${today} nouveaux articles aujourd'hui sur Apple, la tech, l'IA et les jeux vidéo.<br>Sans pub, sans pop-up, juste l'essentiel.</p>
+    <button class="go" id="goBtn">Commencer la lecture ↓</button></div></div>
+    <div class="ticker"><div>${vis.slice(0,12).map(a=>`<b>${esc(a.source)}</b><a data-id="${a.id}" style="color:inherit;cursor:pointer">${esc(a.title)}</a>`).join('')}</div></div>
+    <div class="chips">${cats.map((c,i)=>{const l=vis.find(a=>a.category===c.id);const n=vis.filter(a=>a.category===c.id).length;
+      return `<div class="chip" data-c="${c.id}" style="animation-delay:${i*.08}s"><span class="ic">${c.icon||'📰'}</span><b>${esc(c.name)} · ${n}</b><small>${l?esc(l.title):'Aucun article pour le moment'}</small></div>`}).join('')}</div>`;
+  $('goBtn').onclick=()=>$('secT').scrollIntoView({behavior:'smooth'});
+}
+$('home').onclick=e=>{const c=e.target.closest('.chip');if(c){document.querySelector(`#cats [data-c="${c.dataset.c}"]`).click();return}
+ const a=e.target.closest('[data-id]');if(a)openArt(a.dataset.id)};
+const _render=render;render=function(){_render();renderHome()};
+
+/* ---------- Ajout / suppression de sites via GitHub ---------- */
+let gh=LS('gh')||{repo:'lechatelier-creatif/news-reader',tok:''};
+$('ghRepo').value=gh.repo;$('ghTok').value=gh.tok;
+$('ghSave').onclick=()=>{gh={repo:$('ghRepo').value.trim(),tok:$('ghTok').value.trim()};SS('gh',gh);msg('Connexion enregistrée ✓','ok')};
+function msg(t,k){const m=$('cfgMsg');m.textContent=t;m.className='msg on '+(k||'');if(k==='ok')setTimeout(()=>m.className='msg',5000)}
+const b64e=s=>btoa(unescape(encodeURIComponent(s))),b64d=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,''))));
+async function editSources(fn,label){
+  if(!gh.tok){$('ghBox').open=true;msg("Ajoute d'abord ton jeton GitHub ci-dessous 👇",'err');return false}
+  msg('Enregistrement…');
+  const api=`https://api.github.com/repos/${gh.repo}/contents/sources.json`,H={Authorization:'Bearer '+gh.tok,Accept:'application/vnd.github+json'};
+  try{
+    const r=await fetch(api,{headers:H,cache:'no-store'});if(!r.ok)throw new Error(r.status===401?'Jeton invalide':r.status===404?'Dépôt introuvable':'Erreur '+r.status);
+    const f=await r.json(),cfg=JSON.parse(b64d(f.content));
+    fn(cfg);
+    const p=await fetch(api,{method:'PUT',headers:H,body:JSON.stringify({message:label,content:b64e(JSON.stringify(cfg,null,2)),sha:f.sha})});
+    if(!p.ok)throw new Error(p.status===403?"Le jeton n'a pas le droit d'écrire (Contents : Read and write)":'Erreur '+p.status);
+    // mise à jour locale immédiate
+    data.categories=cfg.categories.map(c=>{const o=data.categories.find(x=>x.id===c.id)||{};return {id:c.id,name:c.name,icon:c.icon||'',sources:c.sources.map(s=>s.name),status:o.status||{}}});
+    data.articles=data.articles.filter(a=>data.categories.some(c=>c.id===a.category&&c.sources.includes(a.source)));
+    SS('cache',data);renderTabs();render();renderCfg();
+    msg(label+' ✓ Les articles arrivent dans 2 à 3 minutes, puis touche ↻.','ok');return true;
+  }catch(e){msg('⚠️ '+e.message,'err');return false}
+}
+function slug(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'cat'+Date.now()}
+renderCfg=function(){
+  const n={};data.articles.forEach(a=>n[a.source]=(n[a.source]||0)+1);
+  $('cfgList').innerHTML=data.categories.map(c=>`<div class="gt"><span>${c.icon} ${esc(c.name)}</span><span><button data-all="${c.id}">${c.sources.every(x=>!off.has(x))?'Tout désactiver':'Tout activer'}</button> <button data-delcat="${c.id}" style="color:#ff3b30">Supprimer</button></span></div>
+  <div class="grp">${c.sources.map(x=>{const st=(c.status||{})[x];return `<label><button class="del" data-del="${esc(x)}" data-cat="${c.id}" title="Supprimer">⊖</button><span>${esc(x)}</span>${st&&st!=='ok'?`<span class="warn">⚠️ ${esc(st)}</span>`:`<small>${n[x]||0}</small>`}<input type="checkbox" class="sw" data-src="${esc(x)}" ${off.has(x)?'':'checked'}></label>`}).join('')}
+  <div class="add"><input type="text" placeholder="Nom (ex : Numerama)" data-nn="${c.id}"><input type="text" placeholder="Adresse du site ou du flux RSS" data-nu="${c.id}"><button class="btn" data-addto="${c.id}">Ajouter</button></div></div>`).join('');
+};
+$('cfgList').addEventListener('click',async e=>{
+  const t=e.target;
+  if(t.dataset.del){e.preventDefault();if(!confirm(`Supprimer « ${t.dataset.del} » ?`))return;
+    editSources(cfg=>{const c=cfg.categories.find(x=>x.id===t.dataset.cat);c.sources=c.sources.filter(s=>s.name!==t.dataset.del)},'Site supprimé : '+t.dataset.del)}
+  if(t.dataset.delcat){const c=data.categories.find(x=>x.id===t.dataset.delcat);if(!confirm(`Supprimer la catégorie « ${c.name} » et ses ${c.sources.length} sites ?`))return;
+    if(cat===c.id)cat='all';editSources(cfg=>{cfg.categories=cfg.categories.filter(x=>x.id!==c.id)},'Catégorie supprimée : '+c.name)}
+  if(t.dataset.addto){const id=t.dataset.addto,nm=document.querySelector(`[data-nn="${id}"]`).value.trim(),u=document.querySelector(`[data-nu="${id}"]`).value.trim();
+    if(!nm||!u){msg('Indique un nom et une adresse','err');return}
+    editSources(cfg=>{cfg.categories.find(x=>x.id===id).sources.push({name:nm,feed:/^https?:/.test(u)?u:'https://'+u})},'Site ajouté : '+nm)}
+});
+$('ncAdd').onclick=()=>{const nm=$('ncName').value.trim(),ic=$('ncIcon').value.trim()||'📰';if(!nm){msg('Donne un nom à la catégorie','err');return}
+  editSources(cfg=>cfg.categories.push({id:slug(nm),name:nm,icon:ic,sources:[]}),'Catégorie créée : '+nm).then(ok=>{if(ok){$('ncName').value='';$('ncIcon').value=''}})};
 
 applyPrefs();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');

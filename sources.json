@@ -1,30 +1,139 @@
 {
   "categories": [
-    {"id": "apple", "name": "Apple", "icon": "", "sources": [
-      {"name": "MacGeneration", "feed": "https://rss.macg.co"},
-      {"name": "iGeneration", "feed": "https://rss.igen.fr"},
-      {"name": "WatchGeneration", "feed": "https://rss.watchgeneration.fr"},
-      {"name": "Mac4Ever", "feed": "https://www.mac4ever.com/flux/rss/content/all"},
-      {"name": "iPhoneSoft", "feed": "https://feeds.feedburner.com/iphonesoft"}
-    ]},
-    {"id": "ia", "name": "IA", "icon": "🧠", "sources": [
-      {"name": "ActuIA", "feed": "https://www.actuia.com/feed/"},
-      {"name": "Numerama IA", "feed": "https://www.numerama.com/tech/intelligence-artificielle/feed/"},
-      {"name": "Frandroid IA", "feed": "https://www.frandroid.com/tag/intelligence-artificielle/feed"},
-      {"name": "Blog du Modérateur IA", "feed": "https://www.blogdumoderateur.com/tools/ia/feed/"},
-      {"name": "Le Monde Informatique IA", "feed": "https://www.lemondeinformatique.fr/flux-rss/thematique/intelligence-artificielle/rss.xml"}
-    ]},
-    {"id": "startup", "name": "Start-up", "icon": "🚀", "sources": [
-      {"name": "Maddyness", "feed": "https://www.maddyness.com/feed/"},
-      {"name": "FrenchWeb", "feed": "https://www.frenchweb.fr/feed"},
-      {"name": "Siècle Digital", "feed": "https://www.siecledigital.fr/feed/"},
-      {"name": "Journal du Net", "feed": "https://www.journaldunet.com/rss/"}
-    ]},
-    {"id": "aura", "name": "Business Rhône-Alpes", "icon": "🏔️", "sources": [
-      {"name": "Le Progrès Éco", "feed": "https://www.leprogres.fr/economie/rss"},
-      {"name": "Le Dauphiné Éco", "feed": "https://www.ledauphine.com/economie/rss"},
-      {"name": "Lyon Mag", "feed": "https://www.lyonmag.com/rss"},
-      {"name": "France 3 AURA", "feed": "https://france3-regions.francetvinfo.fr/auvergne-rhone-alpes/rss"}
-    ]}
+    {
+      "id": "apple",
+      "name": "Apple",
+      "icon": "",
+      "sources": [
+        {
+          "name": "MacGeneration",
+          "feed": "https://rss.macg.co"
+        },
+        {
+          "name": "iGeneration",
+          "feed": "https://rss.igen.fr"
+        },
+        {
+          "name": "WatchGeneration",
+          "feed": "https://rss.watchgeneration.fr"
+        },
+        {
+          "name": "Mac4Ever",
+          "feed": "https://www.mac4ever.com/flux/rss/content/all"
+        },
+        {
+          "name": "iPhoneSoft",
+          "feed": "https://feeds.feedburner.com/iphonesoft"
+        }
+      ]
+    },
+    {
+      "id": "ia",
+      "name": "IA",
+      "icon": "🧠",
+      "sources": [
+        {
+          "name": "ActuIA",
+          "feed": "https://www.actuia.com/feed/"
+        },
+        {
+          "name": "Numerama IA",
+          "feed": "https://www.numerama.com/tech/intelligence-artificielle/feed/"
+        },
+        {
+          "name": "Frandroid IA",
+          "feed": "https://www.frandroid.com/tag/intelligence-artificielle/feed"
+        },
+        {
+          "name": "Blog du Modérateur IA",
+          "feed": "https://www.blogdumoderateur.com/tools/ia/feed/"
+        },
+        {
+          "name": "Le Monde Informatique IA",
+          "feed": "https://www.lemondeinformatique.fr/flux-rss/thematique/intelligence-artificielle/rss.xml"
+        }
+      ]
+    },
+    {
+      "id": "startup",
+      "name": "Start-up",
+      "icon": "🚀",
+      "sources": [
+        {
+          "name": "Maddyness",
+          "feed": "https://www.maddyness.com/feed/"
+        },
+        {
+          "name": "FrenchWeb",
+          "feed": "https://www.frenchweb.fr/feed"
+        },
+        {
+          "name": "Siècle Digital",
+          "feed": "https://www.siecledigital.fr/feed/"
+        },
+        {
+          "name": "Journal du Net",
+          "feed": "https://www.journaldunet.com/rss/"
+        }
+      ]
+    },
+    {
+      "id": "aura",
+      "name": "Business Rhône-Alpes",
+      "icon": "🏔️",
+      "sources": [
+        {
+          "name": "Le Progrès Éco",
+          "feed": "https://www.leprogres.fr/economie/rss"
+        },
+        {
+          "name": "Le Dauphiné Éco",
+          "feed": "https://www.ledauphine.com/economie/rss"
+        },
+        {
+          "name": "Lyon Mag",
+          "feed": "https://www.lyonmag.com/rss"
+        },
+        {
+          "name": "France 3 AURA",
+          "feed": "https://france3-regions.francetvinfo.fr/auvergne-rhone-alpes/rss"
+        }
+      ]
+    },
+    {
+      "id": "jeux",
+      "name": "Jeux vidéo",
+      "icon": "🎮",
+      "sources": [
+        {
+          "name": "Jeuxvideo.com",
+          "feed": "https://www.jeuxvideo.com/rss/rss-news.xml"
+        },
+        {
+          "name": "Gamekult",
+          "feed": "https://www.gamekult.com/feed.xml"
+        },
+        {
+          "name": "IGN France",
+          "feed": "https://fr.ign.com/feed.xml"
+        },
+        {
+          "name": "Gameblog",
+          "feed": "https://www.gameblog.fr/feed"
+        },
+        {
+          "name": "JV France",
+          "feed": "https://www.jvfrance.com/feed"
+        },
+        {
+          "name": "ActuGaming",
+          "feed": "https://www.actugaming.net/feed/"
+        },
+        {
+          "name": "Journal du Geek Jeux",
+          "feed": "https://www.journaldugeek.com/category/jeux-video/feed/"
+        }
+      ]
+    }
   ]
 }
