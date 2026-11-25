@@ -28,6 +28,45 @@
       ]
     },
     {
+      "id": "tech",
+      "name": "Tech",
+      "icon": "💻",
+      "sources": [
+        {
+          "name": "Frandroid",
+          "feed": "https://www.frandroid.com/feed"
+        },
+        {
+          "name": "Numerama",
+          "feed": "https://www.numerama.com/feed/"
+        },
+        {
+          "name": "01net",
+          "feed": "https://www.01net.com/feed/"
+        },
+        {
+          "name": "Les Numériques",
+          "feed": "https://www.lesnumeriques.com/rss.xml"
+        },
+        {
+          "name": "Clubic",
+          "feed": "https://www.clubic.com/feed/news.rss"
+        },
+        {
+          "name": "Journal du Geek",
+          "feed": "https://www.journaldugeek.com/feed/"
+        },
+        {
+          "name": "Presse-citron",
+          "feed": "https://www.presse-citron.net/feed/"
+        },
+        {
+          "name": "Korben",
+          "feed": "https://korben.info/feed"
+        }
+      ]
+    },
+    {
       "id": "ia",
       "name": "IA",
       "icon": "🧠",
@@ -74,21 +113,6 @@
         {
           "name": "Journal du Net",
           "feed": "https://www.journaldunet.com/rss/"
-        }
-      ]
-    },
-    {
-      "id": "aura",
-      "name": "Business Rhône-Alpes",
-      "icon": "🏔️",
-      "sources": [
-        {
-          "name": "Lyon Mag",
-          "feed": "https://www.lyonmag.com/rss"
-        },
-        {
-          "name": "France 3 AURA",
-          "feed": "https://france3-regions.francetvinfo.fr/auvergne-rhone-alpes/rss"
         }
       ]
     },
