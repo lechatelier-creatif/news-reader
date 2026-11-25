@@ -87,10 +87,6 @@
       "icon": "🏔️",
       "sources": [
         {
-          "name": "Le Dauphiné Éco",
-          "feed": "https://www.ledauphine.com/economie/rss"
-        },
-        {
           "name": "Lyon Mag",
           "feed": "https://www.lyonmag.com/rss"
         },
