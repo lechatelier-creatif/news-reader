@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mes News">
-<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
@@ -184,15 +184,120 @@ html,body{overflow-x:hidden;width:100%;max-width:100%}
  body.reading header,body.reading #upd,body.reading main{width:50%!important;max-width:50%!important}
  #reader{left:50%!important;right:0!important;width:auto!important}
 }
+
+/* =====================================================================
+   DA Apple : tokens issus de « Apple macOS 27 UI Kit.sketch »
+   (System Colors, Labels, Fills, Separators, échelle typographique)
+   + Liquid Glass (Technology Overviews > Interface)
+   ===================================================================== */
+:root{
+ --blue:#0088ff;--green:#34c759;--red:#ff383c;--orange:#ff8d28;--purple:#cb30e0;--indigo:#6155f5;--pink:#ff2d55;--teal:#00c3d0;
+ --bg:#f2f2f7;--bg2:#ffffff;--text:#000;--sec:rgba(60,60,67,.6);--ter:rgba(60,60,67,.3);
+ --fill1:rgba(0,0,0,.10);--fill2:rgba(0,0,0,.08);--fill3:rgba(0,0,0,.05);--line:rgba(60,60,67,.29);
+ --accent:var(--blue);--card:#fff;
+ --glass:rgba(255,255,255,.55);--glass-hi:rgba(255,255,255,.9);--glass-edge:rgba(255,255,255,.7);
+ --shadow:0 0 0 .5px rgba(0,0,0,.06),0 2px 6px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.06);
+ --rbg:#fff;--rtext:#000;
+}
+@media (prefers-color-scheme:dark){:root{
+ --blue:#0091ff;--green:#30d158;--red:#ff4245;--orange:#ff9230;--purple:#db34f2;--indigo:#6d7cff;--pink:#ff375f;--teal:#00d2e0;
+ --bg:#000;--bg2:#1c1c1e;--text:#fff;--sec:rgba(235,235,245,.6);--ter:rgba(235,235,245,.3);
+ --fill1:rgba(255,255,255,.10);--fill2:rgba(255,255,255,.08);--fill3:rgba(255,255,255,.05);--line:rgba(84,84,88,.6);
+ --card:#1c1c1e;--glass:rgba(40,40,44,.55);--glass-hi:rgba(255,255,255,.14);--glass-edge:rgba(255,255,255,.12);
+ --shadow:0 0 0 .5px rgba(255,255,255,.06),0 12px 32px rgba(0,0,0,.4);--rbg:#000;--rtext:#fff}}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro",system-ui,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+body{background:var(--bg)}
+
+/* Liquid Glass : verre réfractif, liseré lumineux, ombre douce */
+.glass,header,.rbar,#prefs,.tabs .tab,.ib,#cfg .sheet,.ticker{
+ backdrop-filter:blur(24px) saturate(190%);-webkit-backdrop-filter:blur(24px) saturate(190%)}
+header{background:color-mix(in srgb,var(--bg) 72%,transparent)!important;border-bottom:.5px solid var(--line)!important;padding-bottom:12px!important}
+h1{font-family:-apple-system,"SF Pro Display",system-ui;font-size:34px!important;font-weight:700!important;letter-spacing:.01em!important}
+
+/* Boutons ronds Liquid Glass + icônes SF */
+.ib{width:38px!important;height:38px!important;display:grid;place-items:center;padding:0;border:0;border-radius:50%!important;
+ background:var(--glass)!important;color:var(--text)!important;box-shadow:inset 0 1px 0 var(--glass-edge),inset 0 0 0 .5px var(--glass-edge),0 2px 10px rgba(0,0,0,.08);transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.ib:active{transform:scale(.9)}
+.ib svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ib.on svg{fill:var(--orange);stroke:var(--orange)}
+.ib.spin svg{animation:rot 1s linear infinite}@keyframes rot{to{transform:rotate(360deg)}}
+#cfgClose{background:var(--accent)!important;color:#fff!important}
+
+/* Champ de recherche macOS / iOS */
+#q{background:var(--fill2)!important;border-radius:12px!important;padding:9px 12px 9px 34px!important;font-size:17px!important;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L20 20'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:10px center!important;background-size:17px!important}
+
+/* Contrôle segmenté en capsules de verre */
+.tab{background:var(--fill3)!important;color:var(--text)!important;font-weight:590!important;font-size:15px!important;padding:7px 15px!important;box-shadow:inset 0 0 0 .5px var(--fill1);transition:all .25s cubic-bezier(.3,1.3,.5,1)}
+.tab.on{background:var(--text)!important;color:var(--bg)!important;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.srcs .tab.on{background:var(--accent)!important;color:#fff!important}
+
+/* Accueil : bandeau sobre, style keynote Apple */
+.hero{background:radial-gradient(120% 140% at 0% 0%,#1e3a8a 0%,transparent 55%),radial-gradient(90% 120% at 100% 0%,#7c3aed 0%,transparent 55%),radial-gradient(120% 120% at 60% 120%,#0ea5e9 0%,transparent 55%),#05060a!important;
+ animation:none!important;border-radius:28px!important;box-shadow:var(--shadow);min-height:280px}
+.hero::after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg at 70% 40%,transparent,rgba(255,255,255,.07),transparent 30%);animation:rot 24s linear infinite;pointer-events:none}
+.hero h2{font-family:-apple-system,"SF Pro Display";font-size:44px!important;font-weight:700!important;letter-spacing:-.02em!important;
+ background:linear-gradient(90deg,#fff 0%,#c7d2fe 40%,#f0abfc 70%,#fff 100%);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 8s linear infinite}
+@keyframes shine{to{background-position:200%}}
+.hero p{color:rgba(255,255,255,.75)!important;font-size:17px!important}
+.hero p:first-child{text-transform:uppercase;font-size:12px!important;letter-spacing:.08em;font-weight:600;color:rgba(255,255,255,.55)!important}
+.hero .go{background:#fff!important;color:#000!important;font-weight:600!important;padding:12px 22px!important;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.fl{filter:drop-shadow(0 10px 18px rgba(0,0,0,.45))!important;opacity:.9}
+.orbit{border-color:rgba(255,255,255,.18)!important}
+@media (max-width:600px){.hero h2{font-size:34px!important}}
+
+/* Bandeau défilant en verre */
+.ticker{background:var(--glass)!important;box-shadow:inset 0 0 0 .5px var(--glass-edge);font-size:15px!important}
+.ticker b{color:var(--accent)!important;font-weight:600}
+
+/* Cartes catégories : couleurs système du kit */
+.chip{background:var(--card)!important;box-shadow:var(--shadow);border-radius:20px!important;position:relative;overflow:hidden}
+.chip::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c,var(--accent))}
+.chips .chip:nth-child(1){--c:var(--blue)}.chips .chip:nth-child(2){--c:var(--purple)}.chips .chip:nth-child(3){--c:var(--orange)}
+.chips .chip:nth-child(4){--c:var(--green)}.chips .chip:nth-child(5){--c:var(--pink)}.chips .chip:nth-child(6){--c:var(--teal)}.chips .chip:nth-child(7){--c:var(--indigo)}
+.chip b{font-weight:600!important;font-size:17px}
+
+/* Cartes articles façon Apple News */
+.sec{font-family:-apple-system,"SF Pro Display";font-size:28px!important;font-weight:700!important}
+main .card{background:var(--card)!important;border-radius:20px!important;box-shadow:var(--shadow)!important;transition:transform .35s cubic-bezier(.3,1.4,.5,1),box-shadow .3s}
+@media (hover:hover){main .card:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 0 0 .5px rgba(0,0,0,.06),0 20px 44px rgba(0,0,0,.12)!important}}
+.card h2{font-family:-apple-system,"SF Pro Display";font-weight:700!important;letter-spacing:-.01em}
+.card .meta,.meta{color:var(--sec)!important;font-weight:600!important;font-size:12px;letter-spacing:.02em}
+.card .meta span:first-child{color:var(--accent)}
+.card p{color:var(--sec)!important}
+.card.read{opacity:.55}
+.card.cur{outline:2.5px solid var(--accent)!important;outline-offset:-2.5px}
+
+/* Lecteur : typographie Apple (New York / SF) */
+#reader{background:var(--rbg)!important}
+.rbar{background:color-mix(in srgb,var(--rbg) 70%,transparent)!important;border-bottom:.5px solid var(--line)!important}
+article{font-size:var(--rs)!important;line-height:1.6!important}
+article h1{font-family:-apple-system,"SF Pro Display",system-ui!important;font-size:2em!important;font-weight:700!important;letter-spacing:-.02em}
+article .meta{color:var(--accent)!important}
+article img{border-radius:16px!important;box-shadow:var(--shadow)}
+.orig{background:var(--accent)!important;color:#fff!important;border-radius:999px!important}
+#prefs{background:var(--glass)!important;border-radius:20px!important;box-shadow:inset 0 0 0 .5px var(--glass-edge),0 20px 50px rgba(0,0,0,.25)!important}
+#prefs button{background:var(--fill2)!important;border-radius:12px!important;font-weight:600}
+
+/* Feuille « Mes sites » : style Réglages iOS */
+#cfg{background:rgba(0,0,0,.25)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#cfg .sheet{background:color-mix(in srgb,var(--bg) 88%,transparent)!important;border-radius:28px 28px 0 0!important;box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+@media (min-width:900px){#cfg .sheet{border-radius:28px!important}}
+#cfg .grp{background:var(--bg2)!important;border-radius:14px!important}
+#cfg .gt{color:var(--sec)!important;font-size:13px!important;font-weight:400!important}
+#cfg .btn{background:var(--accent)!important;border-radius:999px!important;font-weight:600}
+#cfg label{font-size:17px!important}
+.sw:checked{background:var(--green)!important}
+@media (min-width:700px){body.reading main .card{border-radius:14px!important}}
 </style>
 </head>
 <body>
 <header>
   <div class="top">
     <h1>Mes News</h1>
-    <button class="ib" id="favBtn" title="Favoris">☆</button>
-    <button class="ib" id="refresh" title="Actualiser">↻</button>
-    <button class="ib" id="gear" title="Choisir les sites">⚙︎</button>
+    <button class="ib" id="favBtn" title="Favoris"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></svg></button>
+    <button class="ib" id="refresh" title="Actualiser"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4v4.5H15"/></svg></button>
+    <button class="ib" id="gear" title="Mes sites"><svg viewBox="0 0 24 24"><path d="M10.3 3h3.4l.5 2.4 1.6.9 2.3-.8 1.7 2.9-1.8 1.6v1.9l1.8 1.6-1.7 2.9-2.3-.8-1.6.9-.5 2.4h-3.4l-.5-2.4-1.6-.9-2.3.8-1.7-2.9 1.8-1.6v-1.9L4.2 8.4l1.7-2.9 2.3.8 1.6-.9z"/><circle cx="12" cy="12" r="2.8"/></svg></button>
   </div>
   <input id="q" type="search" placeholder="Rechercher">
   <div class="tabs" id="cats"></div>
@@ -204,7 +309,7 @@ html,body{overflow-x:hidden;width:100%;max-width:100%}
 <main id="list"></main>
 
 <div id="cfg"><div class="sheet">
-  <div class="hd"><b>Mes sites</b><button class="ib" id="cfgClose">✓</button></div>
+  <div class="hd"><b>Mes sites</b><button class="ib" id="cfgClose"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div>
   <div class="msg" id="cfgMsg"></div>
   <div id="cfgList"></div>
   <div class="gt"><span>➕ Nouvelle catégorie</span></div>
@@ -217,11 +322,11 @@ html,body{overflow-x:hidden;width:100%;max-width:100%}
 </div></div>
 <div id="reader">
   <div class="rbar">
-    <button class="ib" id="back" title="Fermer">‹</button>
+    <button class="ib" id="back" title="Fermer"><svg viewBox="0 0 24 24"><path d="M15 4.5L7.5 12l7.5 7.5"/></svg></button>
     <span class="sp"></span>
-    <button class="ib" id="rfav">☆</button>
-    <button class="ib" id="share">⇪</button>
-    <button class="ib" id="aa">Aa</button>
+    <button class="ib" id="rfav"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></svg></button>
+    <button class="ib" id="share"><svg viewBox="0 0 24 24"><path d="M12 15V3.5M8 7.5l4-4 4 4M7 10.5H5.5v10h13v-10H17"/></svg></button>
+    <button class="ib" id="aa"><svg viewBox="0 0 24 24"><path d="M3 18l4.5-12L12 18M4.6 14h5.8M14 18l3-8 3 8M15 15.5h4"/></svg></button>
     <div id="prefs">
       <div><button data-s="-1">A−</button><button data-s="1">A+</button></div>
       <div><button data-f="sans">Sans</button><button data-f="serif">Serif</button></div>
@@ -243,10 +348,10 @@ const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"
 function ago(d){const m=(Date.now()-new Date(d))/6e4;if(m<60)return Math.max(1,m|0)+' min';if(m<1440)return (m/60|0)+' h';return (m/1440|0)+' j'}
 
 async function load(force){
-  $('refresh').textContent='…';
+  $('refresh').classList.add('spin');
   try{const r=await fetch('news.json'+(force?'?t='+Date.now():''),{cache:force?'reload':'default'});data=await r.json();SS('cache',data)}
   catch(e){data=data||LS('cache')}
-  $('refresh').textContent='↻';
+  $('refresh').classList.remove('spin');
   if(!data){$('list').innerHTML='<div class="empty">Aucune donnée (hors ligne ?)</div>';return}
   $('upd').textContent='Mis à jour il y a '+ago(data.updated);
   renderTabs();render();
@@ -287,7 +392,7 @@ function openArt(id,noPush){
    <h1>${esc(x.title)}</h1>${x.content}<a class="orig" href="${esc(x.url)}" target="_blank" rel="noopener">Voir l'article original ↗</a>`;
   $('art').querySelectorAll('a').forEach(l=>{l.target='_blank';l.rel='noopener'});
   $('art').querySelectorAll('img').forEach(i=>i.onerror=()=>i.remove());
-  $('rfav').textContent=favs[id]?'★':'☆';
+  $('rfav').classList.toggle('on',!!favs[id]);
   $('reader').scrollTop=0;$('reader').classList.add('open');document.body.classList.add('reading');document.querySelectorAll('.card.cur').forEach(c=>c.classList.remove('cur'));
   if(!noPush){location.hash&&innerWidth>=700?history.replaceState(null,'','#'+id):history.pushState(null,'','#'+id)}
   const c=document.querySelector(`.card[data-id="${id}"]`);if(c){c.classList.add('read','cur');if(innerWidth>=700)c.scrollIntoView({block:'nearest'})}
@@ -300,15 +405,15 @@ function applyPrefs(){
   document.body.classList.remove('theme-light','theme-sepia','theme-dark');if(prefs.t)document.body.classList.add('theme-'+prefs.t);SS('prefs',prefs);
 }
 
-$('cats').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;cat=b.dataset.c;src='all';onlyFav=false;$('favBtn').textContent='☆';SS('cat',cat);renderTabs();render();scrollTo(0,0)};
+$('cats').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;cat=b.dataset.c;src='all';onlyFav=false;$('favBtn').classList.remove('on');SS('cat',cat);renderTabs();render();scrollTo(0,0)};
 $('srcs').onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;src=b.dataset.s;renderTabs();render()};
 $('list').onclick=e=>{const c=e.target.closest('.card');if(c)openArt(c.dataset.id)};
 $('q').oninput=()=>render();
 $('refresh').onclick=()=>load(true);
-$('favBtn').onclick=()=>{onlyFav=!onlyFav;$('favBtn').textContent=onlyFav?'★':'☆';render()};
+$('favBtn').onclick=()=>{onlyFav=!onlyFav;$('favBtn').classList.toggle('on',onlyFav);render()};
 $('back').onclick=()=>history.length>1&&location.hash?history.back():closeArt();
 window.onpopstate=()=>{location.hash?openArt(location.hash.slice(1),true):closeArt()};
-$('rfav').onclick=()=>{if(!cur)return;if(favs[cur.id])delete favs[cur.id];else favs[cur.id]=cur;SS('favs',favs);$('rfav').textContent=favs[cur.id]?'★':'☆'};
+$('rfav').onclick=()=>{if(!cur)return;if(favs[cur.id])delete favs[cur.id];else favs[cur.id]=cur;SS('favs',favs);$('rfav').classList.toggle('on',!!favs[cur.id])};
 $('share').onclick=()=>{if(!cur)return;navigator.share?navigator.share({title:cur.title,url:cur.url}).catch(()=>{}):navigator.clipboard.writeText(cur.url)};
 $('aa').onclick=()=>$('prefs').classList.toggle('on');
 $('prefs').onclick=e=>{const b=e.target;if(b.dataset.s)prefs.s=Math.min(28,Math.max(14,prefs.s+ +b.dataset.s*2));if(b.dataset.f)prefs.f=b.dataset.f;if(b.dataset.t!==undefined)prefs.t=b.dataset.t;applyPrefs()};
@@ -405,7 +510,7 @@ async function runRobot(silent){
   if(robotBusy)return;
   if(!gh.tok){if(!silent)alert("Pour relancer le robot, ajoute ton jeton GitHub dans ⚙︎ → Connexion GitHub.");return load(true)}
   robotBusy=true;const before=data&&data.updated;
-  $('refresh').textContent='⏳';$('upd').textContent='🤖 Robot lancé, récupération des articles (1 à 3 min)…';
+  $('refresh').classList.add('spin');$('upd').textContent='🤖 Robot lancé, récupération des articles (1 à 3 min)…';
   try{
     const r=await fetch(`https://api.github.com/repos/${gh.repo}/actions/workflows/fetch.yml/dispatches`,{method:'POST',headers:{Authorization:'Bearer '+gh.tok,Accept:'application/vnd.github+json'},body:JSON.stringify({ref:'main'})});
     if(!r.ok)throw new Error(r.status===403||r.status===404?"le jeton n'a pas le droit de lancer le robot (coche « repo » ou « workflow »)":'erreur '+r.status);
@@ -416,7 +521,7 @@ async function runRobot(silent){
       $('upd').textContent='🤖 Récupération en cours… '+((i+1)*15)+' s';
     }
   }catch(e){$('upd').textContent='⚠️ '+e.message}
-  robotBusy=false;$('refresh').textContent='↻';
+  robotBusy=false;$('refresh').classList.remove('spin');
 }
 $('refresh').onclick=()=>runRobot(false);
 // À l'ouverture de l'app : si les news ont plus de 45 min, on relance le robot tout seul
