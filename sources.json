@@ -83,10 +83,6 @@
       "icon": "🏔️",
       "sources": [
         {
-          "name": "Le Progrès Éco",
-          "feed": "https://www.leprogres.fr/economie/rss"
-        },
-        {
           "name": "Le Dauphiné Éco",
           "feed": "https://www.ledauphine.com/economie/rss"
         },
