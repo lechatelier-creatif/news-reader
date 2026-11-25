@@ -80,6 +80,19 @@ body.theme-dark{--rbg:#1c1c1e;--rtext:#f2f2f7}
   #reader{left:420px;transform:none;display:none;border-left:.5px solid var(--line);transition:none}
   #reader.open{display:block}
 }
+
+#cfg{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.35);display:none;align-items:flex-end;justify-content:center}
+#cfg.on{display:flex}
+#cfg .sheet{background:var(--bg);width:100%;max-width:520px;max-height:85vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:16px 16px calc(env(safe-area-inset-bottom) + 20px)}
+@media (min-width:900px){#cfg{align-items:center}#cfg .sheet{border-radius:20px}}
+#cfg .hd{display:flex;align-items:center;margin-bottom:8px}#cfg .hd b{flex:1;font-size:20px}
+#cfg .grp{background:var(--card);border-radius:14px;margin:8px 0 18px;overflow:hidden}
+#cfg .gt{display:flex;justify-content:space-between;font-size:13px;color:var(--sec);text-transform:uppercase;font-weight:600;margin-top:10px;padding:0 4px}
+#cfg .gt button{border:0;background:none;color:var(--accent);font-size:13px;cursor:pointer}
+#cfg label{display:flex;align-items:center;padding:12px 14px;border-bottom:.5px solid var(--line);font-size:16px;cursor:pointer}
+#cfg label:last-child{border:0}#cfg label span{flex:1}#cfg label small{color:var(--sec);margin-right:10px}
+.sw{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:14px;background:var(--line);position:relative;cursor:pointer;transition:.2s;margin:0}
+.sw:checked{background:#34c759}.sw::after{content:"";position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.2s}.sw:checked::after{left:20px}
 </style>
 </head>
 <body>
@@ -88,6 +101,7 @@ body.theme-dark{--rbg:#1c1c1e;--rtext:#f2f2f7}
     <h1>Mes News</h1>
     <button class="ib" id="favBtn" title="Favoris">☆</button>
     <button class="ib" id="refresh" title="Actualiser">↻</button>
+    <button class="ib" id="gear" title="Choisir les sites">⚙︎</button>
   </div>
   <input id="q" type="search" placeholder="Rechercher">
   <div class="tabs" id="cats"></div>
@@ -96,6 +110,10 @@ body.theme-dark{--rbg:#1c1c1e;--rtext:#f2f2f7}
 <div id="upd"></div>
 <main id="list"></main>
 
+<div id="cfg"><div class="sheet">
+  <div class="hd"><b>Mes sites</b><button class="ib" id="cfgClose">✓</button></div>
+  <div id="cfgList"></div>
+</div></div>
 <div id="reader">
   <div class="rbar">
     <button class="ib" id="back" title="Fermer">‹</button>
@@ -116,7 +134,7 @@ body.theme-dark{--rbg:#1c1c1e;--rtext:#f2f2f7}
 const LS=k=>JSON.parse(localStorage.getItem(k)||'null');
 const SS=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 let data=null,cat=LS('cat')||'all',src='all',onlyFav=false,cur=null;
-let read=new Set(LS('read')||[]),favs=LS('favs')||{};
+let off=new Set(LS('off')||[]),read=new Set(LS('read')||[]),favs=LS('favs')||{};
 let prefs=LS('prefs')||{s:18,f:'sans',t:''};
 const $=id=>document.getElementById(id);
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -139,11 +157,12 @@ function renderTabs(){
   $('cats').innerHTML=cats.map(c=>`<button class="tab ${c.id===cat?'on':''}" data-c="${c.id}">${c.icon} ${esc(c.name)}</button>`).join('');
   const c=data.categories.find(x=>x.id===cat);
   $('srcs').style.display=c?'flex':'none';
-  if(c)$('srcs').innerHTML=['all',...c.sources].map(s=>`<button class="tab ${s===src?'on':''}" data-s="${esc(s)}">${s==='all'?'Toutes':esc(s)}</button>`).join('');
+  if(c)$('srcs').innerHTML=['all',...c.sources.filter(x=>!off.has(x))].map(s=>`<button class="tab ${s===src?'on':''}" data-s="${esc(s)}">${s==='all'?'Toutes':esc(s)}</button>`).join('');
 }
 
 function list(){
   let a=onlyFav?Object.values(favs).sort((x,y)=>y.date.localeCompare(x.date)):data.articles;
+  if(!onlyFav)a=a.filter(x=>!off.has(x.source));
   if(!onlyFav&&cat!=='all')a=a.filter(x=>x.category===cat);
   if(!onlyFav&&src!=='all')a=a.filter(x=>x.source===src);
   const q=$('q').value.trim().toLowerCase();
@@ -197,6 +216,18 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)$('back').click
 let sx=null;$('reader').addEventListener('touchstart',e=>{sx=e.touches[0].clientX<30?e.touches[0].clientX:null},{passive:true});
 $('reader').addEventListener('touchend',e=>{if(sx!==null&&e.changedTouches[0].clientX-sx>80)$('back').click();sx=null});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&data&&Date.now()-new Date(data.updated)>30*6e4)load(true)});
+
+function renderCfg(){
+  const n={};data.articles.forEach(a=>n[a.source]=(n[a.source]||0)+1);
+  $('cfgList').innerHTML=data.categories.map(c=>`<div class="gt"><span>${c.icon} ${esc(c.name)}</span><button data-all="${c.id}">${c.sources.every(x=>!off.has(x))?'Tout désactiver':'Tout activer'}</button></div>
+  <div class="grp">${c.sources.map(x=>`<label><span>${esc(x)}</span><small>${n[x]||0}</small><input type="checkbox" class="sw" data-src="${esc(x)}" ${off.has(x)?'':'checked'}></label>`).join('')}</div>`).join('');
+}
+function saveCfg(){SS('off',[...off]);const c=data.categories.find(x=>x.id===cat);if(c&&!c.sources.some(x=>!off.has(x)))cat='all';if(off.has(src))src='all';renderTabs();render();renderCfg()}
+$('gear').onclick=()=>{if(!data)return;renderCfg();$('cfg').classList.add('on')};
+$('cfgClose').onclick=()=>$('cfg').classList.remove('on');
+$('cfg').onclick=e=>{if(e.target.id==='cfg')$('cfg').classList.remove('on')};
+$('cfgList').onchange=e=>{const s=e.target.dataset.src;if(!s)return;e.target.checked?off.delete(s):off.add(s);saveCfg()};
+$('cfgList').onclick=e=>{const id=e.target.dataset.all;if(!id)return;const c=data.categories.find(x=>x.id===id);const allOn=c.sources.every(x=>!off.has(x));c.sources.forEach(x=>allOn?off.add(x):off.delete(x));saveCfg()};
 
 applyPrefs();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
