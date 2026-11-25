@@ -425,6 +425,19 @@ body.duo.rail #reader article{padding-right:calc(max(env(safe-area-inset-right),
 .card .meta{white-space:nowrap;overflow:hidden}
 .card .meta span:first-child{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .card .meta span:not(:first-child){flex:none}
+
+/* ---- Barre de partage toujours en haut de l'article ---- */
+#reader .rbar{position:-webkit-sticky;position:sticky;top:0;flex-direction:row!important;width:auto!important;height:auto!important;inset:auto!important;z-index:5}
+/* ---- iPhone Duo : bande système (heure, réseau) à droite ----
+   Le bandeau du haut s'arrête avant l'heure et le réseau ; il est assez haut pour les couvrir,
+   et en dessous, les news prennent toute la largeur de l'écran. */
+body.hasrail header{padding-right:calc(var(--inset) + 12px)!important;min-height:calc(env(safe-area-inset-top) + 172px);display:flex;flex-direction:column;justify-content:flex-end}
+body.hasrail header>*{width:100%}
+body.hasrail #home,body.hasrail .sec,body.hasrail #upd,body.hasrail main{padding-right:max(12px,env(safe-area-inset-left))!important;margin-right:0!important}
+body.hasrail #reader{padding-right:0!important}
+body.hasrail #reader .rbar{padding-right:calc(var(--inset) + 12px)!important;min-height:172px;align-items:flex-end;padding-bottom:12px}
+body.hasrail #reader article{padding-right:20px!important}
+body.hasrail #prefs{top:auto!important;bottom:auto!important;right:calc(var(--inset) + 12px)!important;margin-top:180px}
 </style>
 </head>
 <body>
@@ -675,7 +688,10 @@ function detectDuo(){
   const b=document.body.classList;
   b.toggle('duo',!!k);b.toggle('duo-outer',k==='outer');b.toggle('duo-inner',k==='inner');
   b.toggle('land',w>h);
-  b.toggle('rail',!!k&&(k==='outer'||w>h));
+  b.toggle('rail',false);
+  const p=document.createElement('div');p.style.cssText='position:fixed;right:0;width:env(safe-area-inset-right);height:1px;visibility:hidden';document.body.appendChild(p);
+  const inset=p.offsetWidth;p.remove();
+  b.toggle('hasrail',inset>20);document.documentElement.style.setProperty('--inset',inset+'px');
 }
 addEventListener('resize',detectDuo);addEventListener('orientationchange',()=>setTimeout(detectDuo,200));
 detectDuo();
