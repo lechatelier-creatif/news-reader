@@ -7,8 +7,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mes News">
-<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#e6eefc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1830" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" href="icon.png">
@@ -174,7 +174,7 @@ body.reading #home,body.reading .sec{display:none!important}
 }
 
 /* Pleine largeur sur iPhone / iPhone Duo (écrans tactiles) : pas de bande vide à droite */
-html,body{overflow-x:hidden;width:100%;max-width:100%}
+html,body{overflow-x:clip;width:100%;max-width:100%}
 #reader:not(.open){visibility:hidden;pointer-events:none}
 @media (pointer:coarse){
  header>*,#home,main,.sec,#upd,#q,.tabs,.top{max-width:none!important}
@@ -405,6 +405,26 @@ body.duo-inner:not(.land).reading header,body.duo-inner:not(.land).reading main,
 .chip b{display:inline!important;margin:0!important;font-size:14px!important;white-space:nowrap}
 .chip em{font-style:normal;font-size:12px;font-weight:700;margin-left:auto;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--cc) 20%,transparent);color:var(--cc)}
 .chip small{display:none!important}
+
+/* ---- Bandeau du haut toujours visible ---- */
+header{position:-webkit-sticky;position:sticky;top:0;z-index:15}
+header .tabs#cats{margin-top:12px}
+/* ---- Plein écran : le fond passe sous les barres système (Duo fermé et ouvert) ---- */
+html{background:var(--bg);min-height:100%}
+@media (prefers-color-scheme:light){html{background:#e6eefc}}
+@media (prefers-color-scheme:dark){html{background:#0f1830}}
+body{min-height:100vh;min-height:100dvh}
+/* le contenu évite juste la zone système, le fond et le verre vont jusqu'au bord */
+header,#home,.sec,#upd,main{padding-left:max(16px,calc(env(safe-area-inset-left) + 12px))!important;padding-right:max(16px,calc(env(safe-area-inset-right) + 12px))!important}
+body.duo header,body.duo #home,body.duo .sec,body.duo #upd,body.duo main{padding-left:max(20px,calc(env(safe-area-inset-left) + 12px))!important;padding-right:max(20px,calc(env(safe-area-inset-right) + 12px))!important}
+#reader{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+body.duo.rail #reader{padding-right:0}
+body.duo.rail #reader .rbar{width:max(env(safe-area-inset-right),64px)}
+body.duo.rail #reader article{padding-right:calc(max(env(safe-area-inset-right),64px) + 20px)}
+
+.card .meta{white-space:nowrap;overflow:hidden}
+.card .meta span:first-child{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.card .meta span:not(:first-child){flex:none}
 </style>
 </head>
 <body>
@@ -415,7 +435,7 @@ body.duo-inner:not(.land).reading header,body.duo-inner:not(.land).reading main,
     <button class="ib" id="refresh" title="Actualiser"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4v4.5H15"/></svg></button>
     <button class="ib" id="gear" title="Mes sites"><svg viewBox="0 0 24 24"><path d="M10.3 3h3.4l.5 2.4 1.6.9 2.3-.8 1.7 2.9-1.8 1.6v1.9l1.8 1.6-1.7 2.9-2.3-.8-1.6.9-.5 2.4h-3.4l-.5-2.4-1.6-.9-2.3.8-1.7-2.9 1.8-1.6v-1.9L4.2 8.4l1.7-2.9 2.3.8 1.6-.9z"/><circle cx="12" cy="12" r="2.8"/></svg></button>
   </div>
-  <input id="q" type="search" placeholder="Rechercher">
+  <input id="q" type="hidden" value="">
   <div class="tabs" id="cats"></div>
   <div class="tabs srcs" id="srcs"></div>
 </header>
@@ -649,6 +669,8 @@ function detectDuo(){
   const w=innerWidth,h=innerHeight,mn=Math.min(w,h),mx=Math.max(w,h),r=mx/mn;
   const touch=matchMedia('(pointer:coarse)').matches;
   let k=f||'';
+  const sw=Math.min(screen.width,screen.height),sr=Math.max(screen.width,screen.height)/sw;
+  if(!k&&touch&&sr<1.75){ if(sw>=430&&sw<540)k='outer'; else if(sw>=600&&sw<730)k='inner'; }
   if(!k&&touch&&r<1.7){ if(mn>=430&&mn<540)k='outer'; else if(mn>=600&&mn<730)k='inner'; }
   const b=document.body.classList;
   b.toggle('duo',!!k);b.toggle('duo-outer',k==='outer');b.toggle('duo-inner',k==='inner');
