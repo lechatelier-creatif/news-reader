@@ -153,6 +153,25 @@ body.reading #home,body.reading .sec{display:none!important}
  body.reading header,body.reading #upd,body.reading main{width:env(viewport-segment-left 0 0,50%)!important}
  #reader{left:env(viewport-segment-left 1 0,50%)!important}
 }
+
+/* iPhone Duo : vignettes compactes (fermé ≤ 380 px, ouvert 700-899 px) */
+@media (max-width:380px), (min-width:700px) and (max-width:899px){
+ main{gap:8px!important}
+ main .card{flex-direction:row;border-radius:14px;min-height:0}
+ main .card img{width:76px!important;min-width:76px!important;height:76px!important;min-height:0!important;aspect-ratio:1/1!important;margin:8px 0 8px 8px;border-radius:10px}
+ main .card .b{padding:8px 10px!important}
+ main .card h2{font-size:14px!important;line-height:1.25;margin:3px 0!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+ main .card p{display:none}
+ main .card .meta{font-size:10.5px}
+ .chips{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
+ .chip{padding:10px!important}.chip .ic{font-size:20px!important}.chip b{font-size:14px!important}.chip small{font-size:12px!important}
+}
+@media (min-width:700px) and (max-width:899px){
+ main{grid-template-columns:repeat(2,1fr)!important}
+ body.reading main{grid-template-columns:1fr!important}
+ body.reading main .card img{width:60px!important;min-width:60px!important;height:60px!important}
+ .chips{grid-template-columns:repeat(3,1fr)!important}
+}
 </style>
 </head>
 <body>
